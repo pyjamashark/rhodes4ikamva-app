@@ -1,13 +1,13 @@
 /* ==========================================================================
-   Rhodes4Ikamva — styles
+   Rhodes4Ikamva styles
    Mobile-first, data-light (system fonts, no web fonts), accessible.
    Brand palette is in CSS variables below. NOTE: the IkamvaYouth hex values
-   are best-guess placeholders — replace with the official brand colours once
+   are best-guess placeholders, replace with the official brand colours once
    confirmed (see README, "Open items").
    ========================================================================== */
 
 :root {
-  /* Brand — PLACEHOLDER values, confirm with IkamvaYouth */
+  /* Brand PLACEHOLDER values, confirm with IkamvaYouth */
   --iy-ink: #15233b;       /* deep navy ink */
   --iy-teal: #0b8f86;      /* IkamvaYouth teal */
   --iy-teal-dark: #086c65;

@@ -1,5 +1,5 @@
 /*
- * engine.test.js — run with:  node test/engine.test.js
+ * engine.test.js  (run with:  node test/engine.test.js)
  * Loads the classic-script data/engine (they attach to globalThis.RHODES) and
  * asserts correct behaviour for representative personas.
  */
@@ -131,6 +131,16 @@ console.log("\nRhodes4Ikamva engine tests\n");
   console.log("Persona 12: Unsure of education district");
   check("still recommends WC&NC baseline", sameSet(ids(r.recommended), ["wc_nc"]));
   check("verify note present", r.verifyNotes.length > 0);
+})();
+
+// 13. Nyanga branch inference -> Bishops + WC&NC, with a "confirm" verify note
+(function () {
+  var r = evaluate({ citizenship: "South Africa", residency5of10: true, dob: "2004-02-02",
+    degreeByJuly2027: "yes", province: "Western Cape", branch: "Nyanga",
+    schoolZone: "metro_south", schoolFromBranch: true });
+  console.log("Persona 13: Nyanga branch (Metro South -> Bishops, inferred)");
+  check("recommends Bishops + WC&NC", sameSet(ids(r.recommended), ["bishops", "wc_nc"]), ids(r.recommended).join(","));
+  check("adds a branch-area confirm note", r.verifyNotes.some(function (n) { return /branch's area/i.test(n); }));
 })();
 
 // Global invariants across a sweep

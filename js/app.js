@@ -1,5 +1,5 @@
 /*
- * app.js — UI controller. Renders the countdown, drives the question flow,
+ * app.js: UI controller. Renders the countdown, drives the question flow,
  * computes results via RHODES.engine, and builds the (no-backend) contact links.
  * Classic script. Depends on data.js + engine.js being loaded first.
  */
@@ -8,17 +8,15 @@
   var DATA = window.RHODES.DATA;
   var engine = window.RHODES.engine;
 
-  /* ---------------------------------------------------------------------------
-   * CONFIG — confirm before wide release (see README "Open items").
-   * Until an IkamvaYouth coordinator + a consented public WhatsApp number are
-   * approved, "get help" routes to the official public Rhodes queries address.
-   * Set whatsapp to an E.164 number WITHOUT "+" (e.g. "2774...") to show the
-   * WhatsApp button.
-   * ------------------------------------------------------------------------- */
+  /* CONFIG. Confirm before wide release (see README "Open items").
+     Until an IkamvaYouth coordinator and a consented public WhatsApp number are
+     approved, "get help" routes to the official public Rhodes queries address.
+     Set whatsapp to an E.164 number WITHOUT "+" (e.g. "2774...") to show the
+     WhatsApp button. */
   var CONTACT = {
     name: "the Rhodes Southern Africa team",
     email: "southernafrica.secretary@rhodestrust.com",
-    whatsapp: "" // e.g. "27740544300" — leave "" to hide the WhatsApp button for now
+    whatsapp: "" // e.g. "27740544300". Leave "" to hide the WhatsApp button for now.
   };
   var UPDATED = "15 June 2026";
 
@@ -71,7 +69,7 @@
     if (ms <= 0) {
       box.className = "countdown closed";
       box.appendChild(el("div", { class: "cd-unit" }, el("div", { class: "cd-num", text: "Closed" })));
-      cap.textContent = "The 2027 application window has closed. Watch for the next cycle!";
+      cap.textContent = "The 2027 application window has closed. Watch for the next cycle.";
       return;
     }
     box.className = "countdown";
@@ -84,12 +82,11 @@
         el("div", { class: "cd-lab", text: u[0] })
       ]));
     });
-    cap.textContent = "until applications close — 23:59, 3 August 2026";
+    cap.textContent = "until applications close, 23:59 on 3 August 2026";
   }
 
   // ---- static content -------------------------------------------------------
   function initStatic() {
-    // What it covers
     var cov = byId("covers-list");
     DATA.COVERS.forEach(function (c) {
       cov.appendChild(el("div", { class: "feature" }, [
@@ -97,7 +94,6 @@
         el("div", null, el("h3", { text: c }))
       ]));
     });
-    // Selection criteria
     var crit = byId("criteria-list");
     DATA.SELECTION_CRITERIA.forEach(function (c, i) {
       crit.appendChild(el("div", { class: "feature" }, [
@@ -109,7 +105,7 @@
     byId("mrf-link").href = DATA.META.mandelaRhodesUrl;
     byId("foot-notofficial").textContent = DATA.META.notOfficial;
     byId("foot-disclaimer").textContent = DATA.META.disclaimer;
-    byId("foot-updated").textContent = "Last updated: " + UPDATED + " · Rhodes 2027 cycle";
+    byId("foot-updated").textContent = "Last updated: " + UPDATED + ". Rhodes 2027 cycle.";
   }
 
   /* ===========================================================================
@@ -121,6 +117,7 @@
   function isSAbased() {
     return answers.citizenship === "South Africa" || answers.citizenship === "refugee_sa";
   }
+  function hasBranchZone() { return !!answers.branchZone; }
   function olderBandNeedsRoute(dob) {
     var A = DATA.GATING.age;
     return dob && dob <= A.standardBornAfter && dob > A.extendedBornAfter;
@@ -131,12 +128,12 @@
       id: "branch",
       build: function () {
         var opts = DATA.BRANCHES.map(function (b) {
-          return { main: b.branch, sub: b.province, patch: { branch: b.branch, province: b.province } };
+          return { main: b.branch, sub: b.province, patch: { branch: b.branch, province: b.province, branchZone: b.zone || null } };
         });
-        opts.push({ main: "I'm not at an IkamvaYouth branch / other", patch: { branch: "other" } });
+        opts.push({ main: "I am not at an IkamvaYouth branch / other", patch: { branch: "other", branchZone: null } });
         return {
           legend: "Which IkamvaYouth branch are you part of?",
-          help: "Optional — it helps a coordinator support you. Choose 'other' if it doesn't apply.",
+          help: "This helps us point you to the right scholarship. Choose 'other' if it does not apply.",
           choices: opts
         };
       }
@@ -182,11 +179,11 @@
       when: function () { return olderBandNeedsRoute(answers.dob); },
       build: function () {
         return {
-          legend: "You're a little past the standard age window — that's fine if one of these applies:",
+          legend: "You are a little past the standard age window. That is fine if one of these applies:",
           help: "Older applicants can still be eligible in these cases.",
           choices: [
             { main: "I finished (or will finish) my first degree after 1 Oct 2025", patch: { lateCompletion: true, medical: false } },
-            { main: "I'm a medical / health-sciences graduate in internship or community service", patch: { lateCompletion: false, medical: true } },
+            { main: "I am a medical or health-sciences graduate in internship or community service", patch: { lateCompletion: false, medical: true } },
             { main: "Neither of these", patch: { lateCompletion: false, medical: false } }
           ]
         };
@@ -210,10 +207,10 @@
       build: function () {
         return {
           legend: "Roughly, how are your university marks?",
-          help: "This doesn't decide anything here — Rhodes looks at the whole person. Answer honestly so we can guide you well.",
+          help: "This does not decide anything here. Rhodes looks at the whole person. Answer honestly so we can guide you well.",
           choices: [
             { main: "First-class / distinction level", sub: "around 75%+ / GPA 3.7+", patch: { academics: "yes" } },
-            { main: "Strong — getting there", patch: { academics: "close" } },
+            { main: "Strong, getting there", patch: { academics: "close" } },
             { main: "Not sure", patch: { academics: "notsure" } }
           ]
         };
@@ -230,32 +227,49 @@
       }
     },
     {
-      id: "partnerSchool",
-      when: function () { return isSAbased(); },
+      // Streamlined: for a branch in a School-pool area, confirm in one tap.
+      id: "schoolConfirm",
+      when: function () { return isSAbased() && hasBranchZone(); },
       build: function () {
-        var opts = DATA.PARTNER_SCHOOLS.map(function (s) {
-          return { main: s.name, patch: { partnerSchool: s.name } };
-        });
-        opts.unshift({ main: "None of these / my school isn't listed", patch: { partnerSchool: "none" } });
+        var zone = DATA.zoneById(answers.branchZone);
+        var poolShort = DATA.poolById(zone.pool).short;
         return {
-          legend: "Did you matriculate (finish Grade 12) at any of these schools?",
-          help: "These schools have a direct link to a Rhodes School scholarship.",
+          legend: "You are at the " + answers.branch + " branch, in " + zone.area + " (" + zone.district + " education district).",
+          help: "High schools in this area can qualify for the " + poolShort + " scholarship.",
+          choices: [
+            { main: "Yes, I finished Grade 12 at a school in " + zone.area, patch: { schoolZone: answers.branchZone, schoolFromBranch: true } },
+            { main: "No, I matriculated at a different school or area", patch: { schoolConfirmOther: true } }
+          ]
+        };
+      }
+    },
+    {
+      id: "schoolZonePick",
+      when: function () { return isSAbased() && (!hasBranchZone() || answers.schoolConfirmOther === true); },
+      build: function () {
+        var opts = DATA.SCHOOL_ZONES.map(function (z) {
+          return { main: z.label, sub: z.help, patch: { schoolZone: z.id, schoolFromBranch: false, wantPartner: false } };
+        });
+        opts.push({ main: "I matriculated at a named partner school", sub: "LEAP Langa, SACS, Bishops, Paul Roos, St Andrew's College, and others", patch: { wantPartner: true } });
+        opts.push({ main: "Somewhere else in South Africa", patch: { schoolZone: "none", wantPartner: false } });
+        opts.push({ main: "I am not sure which district", patch: { schoolZone: "notsure", wantPartner: false } });
+        return {
+          legend: "Where did you finish Grade 12 (matriculate)?",
+          help: "Some School scholarships are now open to whole education districts.",
           choices: opts
         };
       }
     },
     {
-      id: "schoolZone",
-      when: function () { return isSAbased() && answers.partnerSchool === "none"; },
+      id: "partnerPick",
+      when: function () { return isSAbased() && answers.wantPartner === true; },
       build: function () {
-        var opts = DATA.SCHOOL_ZONES.map(function (z) {
-          return { main: z.label, sub: z.help, patch: { schoolZone: z.id } };
+        var opts = DATA.PARTNER_SCHOOLS.map(function (s) {
+          return { main: s.name, patch: { partnerSchool: s.name } };
         });
-        opts.push({ main: "Elsewhere in South Africa", patch: { schoolZone: "none" } });
-        opts.push({ main: "I'm not sure which district", patch: { schoolZone: "notsure" } });
+        opts.push({ main: "None of these after all", patch: { partnerSchool: "none" } });
         return {
-          legend: "Where is the high school you matriculated from?",
-          help: "Some School scholarships are now open to whole education districts.",
+          legend: "Which partner school did you matriculate from?",
           choices: opts
         };
       }
@@ -302,7 +316,7 @@
   }
 
   function goBack() {
-    history2.pop(); // drop current
+    history2.pop();
     if (history2.length === 0) { show("home"); return; }
     renderStep(stepById(history2[history2.length - 1]));
   }
@@ -338,13 +352,12 @@
       var err = el("div", { class: "note note-warn", text: "Please enter your date of birth.", style: "display:none" });
       wrap.appendChild(input);
       wrap.appendChild(err);
-      var cont2 = el("button", { class: "btn btn-primary btn-block", type: "button", style: "margin-top:14px",
+      wrap.appendChild(el("button", { class: "btn btn-primary btn-block", type: "button", style: "margin-top:14px",
         onclick: function () {
           if (!input.value) { err.style.display = "block"; return; }
           onAnswer({ dob: input.value });
         }
-      }, "Continue →");
-      wrap.appendChild(cont2);
+      }, "Continue"));
     } else {
       var fs = el("fieldset", null);
       var box = el("div", { class: "choices" });
@@ -358,11 +371,10 @@
       wrap.appendChild(fs);
     }
 
-    var nav = el("div", { class: "q-nav" }, [
-      el("button", { class: "navlink", type: "button", onclick: goBack, text: "← Back" }),
+    wrap.appendChild(el("div", { class: "q-nav" }, [
+      el("button", { class: "navlink", type: "button", onclick: goBack, text: "Back" }),
       el("button", { class: "navlink", type: "button", onclick: function () { show("home"); }, text: "Exit" })
-    ]);
-    wrap.appendChild(nav);
+    ]));
     cont.appendChild(wrap);
     legend.focus({ preventScroll: true });
   }
@@ -376,12 +388,12 @@
   function buildSummary(r) {
     var lines;
     if (!r.gate.passed) {
-      lines = "Hi! I used the IkamvaYouth × Rhodes eligibility checker and I'd like some advice about applying for the Rhodes Scholarship.";
+      lines = "Hi! I used the IkamvaYouth and Rhodes eligibility checker and I would like some advice about applying for the Rhodes Scholarship.";
     } else {
       var names = r.recommended.map(function (p) { return p.name; }).join(" and ");
-      lines = "Hi! I used the IkamvaYouth × Rhodes eligibility checker. It looks like I may be able to apply for: " + names + ". I'd like help applying before the 3 August 2026 deadline.";
+      lines = "Hi! I used the IkamvaYouth and Rhodes eligibility checker. It looks like I may be able to apply for: " + names + ". I would like help applying before the 3 August 2026 deadline.";
     }
-    if (answers.branch && answers.branch !== "other") lines += " (I'm from the " + answers.branch + " branch.)";
+    if (answers.branch && answers.branch !== "other") lines += " (I am from the " + answers.branch + " branch.)";
     return lines;
   }
   function contactButtons(r) {
@@ -393,7 +405,7 @@
         target: "_blank", rel: "noopener" }, "Chat on WhatsApp"));
     }
     row.appendChild(el("a", { class: "btn btn-ghost btn-block",
-      href: "mailto:" + CONTACT.email + "?subject=" + encodeURIComponent("Rhodes Scholarship — help to apply") +
+      href: "mailto:" + CONTACT.email + "?subject=" + encodeURIComponent("Rhodes Scholarship, help to apply") +
             "&body=" + encodeURIComponent(msg) }, "Email " + CONTACT.name));
     return row;
   }
@@ -413,7 +425,7 @@
       });
       c.appendChild(el("div", { class: "you-belong" }, [
         el("h3", { text: "Keep going." }),
-        el("p", { text: "Many strong applicants apply more than once or take a stepping-stone route first. Talk to someone — it's worth it." })
+        el("p", { text: "Many strong applicants apply more than once or take a stepping-stone route first. Talk to someone. It is worth it." })
       ]));
       c.appendChild(contactButtons(r));
       c.appendChild(el("div", { class: "btn-row" }, [
@@ -423,11 +435,10 @@
       return;
     }
 
-    // Eligible
-    c.appendChild(el("h1", { text: "Good news — you may be able to apply! 🎉", tabindex: "-1" }));
+    c.appendChild(el("h1", { text: "Good news, you may be able to apply!", tabindex: "-1" }));
     c.appendChild(el("p", { class: "lead",
       text: r.recommended.length > 1
-        ? "You appear to match these Rhodes pools. You can apply to up to two — usually a School pool plus your regional pool:"
+        ? "You appear to match these Rhodes pools. You can apply to up to two, usually a School pool plus your regional pool:"
         : "You appear to match this Rhodes pool:" }));
 
     r.recommended.forEach(function (p) {
@@ -450,12 +461,10 @@
       c.appendChild(also);
     }
 
-    // Deadline reminder
     c.appendChild(el("div", { class: "note note-stop", html:
-      "<strong>" + daysLeft() + " days left.</strong> Applications close 23:59 SAST on 3 August 2026. Start early — load-shedding season!" }));
+      "<strong>" + daysLeft() + " days left.</strong> Applications close 23:59 SAST on 3 August 2026. Start early, it is load-shedding season." }));
 
-    // Document checklist
-    var docCard = el("div", { class: "card" }, [el("h2", { text: "What you'll need to apply" })]);
+    var docCard = el("div", { class: "card" }, [el("h2", { text: "What you will need to apply" })]);
     var ul = el("ul", { class: "checklist" });
     DATA.DOCUMENTS.forEach(function (d, i) {
       if (d.schoolOnly && !r.needsDisclaimer) return;
@@ -470,9 +479,8 @@
     docCard.appendChild(ul);
     c.appendChild(docCard);
 
-    // Apply + help
     c.appendChild(el("div", { class: "btn-row" }, [
-      el("a", { class: "btn btn-gold btn-block", href: DATA.META.officialUrl, target: "_blank", rel: "noopener" }, "Apply on the official Rhodes site →")
+      el("a", { class: "btn btn-gold btn-block", href: DATA.META.officialUrl, target: "_blank", rel: "noopener" }, "Apply on the official Rhodes site")
     ]));
     c.appendChild(el("h2", { text: "Want a hand?" }));
     c.appendChild(el("p", { class: "muted", text: "Send a message and someone can help you prepare your application." }));
@@ -483,7 +491,7 @@
     }
     c.appendChild(el("div", { class: "you-belong" }, [
       el("h3", { text: "You belong in this." }),
-      el("p", { text: "Selectors look for your authentic voice and your commitment to others — not a 'type'. IkamvaYouth's leadership and service are exactly what Rhodes values." })
+      el("p", { text: "Selectors look for your authentic voice and your commitment to others, not a 'type'. IkamvaYouth's leadership and service are exactly what Rhodes values." })
     ]));
     c.appendChild(el("div", { class: "btn-row" }, [
       el("button", { class: "btn btn-ghost btn-block", type: "button", onclick: startCheck }, "Start over")
@@ -510,7 +518,6 @@
       });
     });
 
-    // open the right section on load (never deep-link into the live flow)
     var h = (location.hash || "").replace("#", "");
     show(SECTIONS.indexOf(h) !== -1 && h !== "check" && h !== "result" ? h : "home");
 

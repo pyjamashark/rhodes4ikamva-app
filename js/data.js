@@ -1,10 +1,11 @@
 /*
- * data.js — ALL Rhodes Scholarship (Southern Africa, 2027) facts in one place.
+ * data.js: ALL Rhodes Scholarship (Southern Africa, 2027) facts in one place.
  *
  * Pure data. No DOM, no logic. To update a fact (a date, a district, the apply
  * link), edit THIS file only and redeploy. Verified against the official 2027
  * "Information for Candidates" (IFC), the Rhodes/Schools Joint Statement, and
- * the 2027 Document Checklist.
+ * the 2027 Document Checklist. Branch to school to district mapping uses the
+ * IkamvaYouth branches page and the WCED education-district school lists.
  *
  * Loaded as a classic <script> in the browser (attaches to window.RHODES) and
  * via require() in the Node test (attaches to globalThis.RHODES).
@@ -21,7 +22,7 @@
     cycle: "2027",
     oxfordEntry: "2027-10-01",
     appOpen: "2026-06-01T00:01:00+02:00", // 00:01 SAST, Mon 01 Jun 2026
-    appClose: "2026-08-03T23:59:00+02:00", // 23:59 SAST, Mon 03 Aug 2026  <-- the countdown target
+    appClose: "2026-08-03T23:59:00+02:00", // 23:59 SAST, Mon 03 Aug 2026  (countdown target)
     refClose: "2026-08-17T23:59:00+02:00", // 23:59 SAST, Mon 17 Aug 2026
     outcomeBy: "2026-12-31",
 
@@ -34,37 +35,34 @@
     disclaimer:
       "The four School scholarships are currently funded as interim Rhodes Scholarships " +
       "for this cycle (from the Rhodes Trust Public Purposes Fund), pending approval of the " +
-      "agreed change by the Charity Commission for England & Wales. Recipients are funded for " +
+      "agreed change by the Charity Commission for England and Wales. Recipients are funded for " +
       "their full tenure regardless of the outcome.",
 
     notOfficial:
-      "This is a free guidance tool made to help IkamvaYouth students, not an official " +
+      "This is a free guidance tool made to help IkamvaYouth students. It is not an official " +
       "Rhodes Trust channel. Always confirm details on the official Rhodes website."
   };
 
   // ---------------------------------------------------------------------------
-  // Gating criteria — ALL must hold for ANY Southern Africa application
+  // Gating criteria. ALL must hold for ANY Southern Africa application.
   // ---------------------------------------------------------------------------
   var GATING = {
-    // Citizenship / legal permanent residence of one of these; refugees/asylum
-    // seekers in South Africa are also considered in this constituency.
     citizenshipCountries: [
       "South Africa", "Botswana", "Lesotho", "Malawi", "Namibia", "eSwatini"
     ],
-    // Countries whose citizens apply ONLY through the BLMNS pool.
     blmnsCountries: ["Botswana", "Lesotho", "Malawi", "Namibia", "eSwatini"],
 
-    residencyYearsRequired: 5, // resident in Southern Africa >= 5 of the last 10 years
+    residencyYearsRequired: 5, // resident in Southern Africa for 5 of the last 10 years
 
     // Age windows, expressed as the date-of-birth boundaries the IFC gives.
-    // Standard: at least 19 and not yet 25 on entry (01 Oct 2027) =>
+    // Standard: at least 19 and not yet 25 on entry (01 Oct 2027), i.e.
     //   born after 01 Oct 2002 AND on or before 01 Oct 2008.
     // Extended (late first degree, or medical/health-sciences): not yet 28 on
-    //   entry => born after 01 Oct 1999 (and older than the standard window).
+    //   entry, i.e. born after 01 Oct 1999 (and older than the standard window).
     age: {
-      minBornOnOrBefore: "2008-10-01", // born after this => younger than 19 on entry (too young)
+      minBornOnOrBefore: "2008-10-01", // born after this is younger than 19 on entry (too young)
       standardBornAfter: "2002-10-01", // standard window lower edge
-      extendedBornAfter: "1999-10-01", // extended window lower edge (too old if born on/before)
+      extendedBornAfter: "1999-10-01", // extended window lower edge (too old if born on or before)
       lateDegreeCompletedAfter: "2025-10-01" // late-undergrad route: first degree completed after this
     },
 
@@ -72,9 +70,9 @@
     english: true
   };
 
-  // SA provinces -> regional (South Africa-at-Large) pool id.
-  // Every SA province maps to exactly one region, so a SA applicant always has
-  // a regional pool as a safe baseline.
+  // SA provinces to regional (South Africa-at-Large) pool id. Every SA province
+  // maps to exactly one region, so a SA applicant always has a regional pool as a
+  // safe baseline.
   var PROVINCE_TO_REGION = {
     "Eastern Cape": "ec_fs",
     "Free State": "ec_fs",
@@ -94,15 +92,14 @@
 
   // ---------------------------------------------------------------------------
   // Pools. type drives the combination rules in engine.js:
-  //   "region"  -> EC&FS, KZN, GLMN, WC&NC   (KZN is a region for combo purposes)
-  //   "blmns"   -> single-pool-only
-  //   "school"  -> SACS, Paul Roos, Bishops, St Andrew's (max ONE school pool)
+  //   "region"  EC&FS, KZN, GLMN, WC&NC   (KZN is a region for combo purposes)
+  //   "blmns"   single-pool-only
+  //   "school"  SACS, Paul Roos, Bishops, St Andrew's (max ONE school pool)
   // ---------------------------------------------------------------------------
   var POOLS = [
-    // ----- Regional South Africa-at-Large committees -----
     {
-      id: "ec_fs", type: "region", name: "Eastern Cape & Free State",
-      short: "Eastern Cape & Free State",
+      id: "ec_fs", type: "region", name: "Eastern Cape and Free State",
+      short: "Eastern Cape and Free State",
       blurb: "The South Africa-at-Large regional committee for the Eastern Cape and Free State."
     },
     {
@@ -111,24 +108,22 @@
       blurb: "The KZN committee awards its own Scholarship and can also send finalists to the national committee."
     },
     {
-      id: "glmn", type: "region", name: "Gauteng, Limpopo, Mpumalanga & North-West (GLMN)",
+      id: "glmn", type: "region", name: "Gauteng, Limpopo, Mpumalanga and North-West (GLMN)",
       short: "GLMN",
       blurb: "The South Africa-at-Large regional committee for Gauteng, Limpopo, Mpumalanga and North-West."
     },
     {
-      id: "wc_nc", type: "region", name: "Western Cape & Northern Cape",
-      short: "Western Cape & Northern Cape",
+      id: "wc_nc", type: "region", name: "Western Cape and Northern Cape",
+      short: "Western Cape and Northern Cape",
       blurb: "The South Africa-at-Large regional committee for the Western Cape and Northern Cape."
     },
 
-    // ----- BLMNS (single pool only) -----
     {
-      id: "blmns", type: "blmns", name: "Botswana, Lesotho, Malawi, Namibia & eSwatini (BLMNS)",
+      id: "blmns", type: "blmns", name: "Botswana, Lesotho, Malawi, Namibia and eSwatini (BLMNS)",
       short: "BLMNS",
-      blurb: "For citizens / legal residents of Botswana, Lesotho, Malawi, Namibia or eSwatini. BLMNS applicants apply to this pool only."
+      blurb: "For citizens or legal residents of Botswana, Lesotho, Malawi, Namibia or eSwatini. BLMNS applicants apply to this pool only."
     },
 
-    // ----- Four expanded School scholarships (interim-funded this cycle) -----
     {
       id: "sacs", type: "school", name: "SACS Scholarship",
       short: "SACS",
@@ -145,7 +140,7 @@
     {
       id: "paulroos", type: "school", name: "Paul Roos Scholarship",
       short: "Paul Roos",
-      blurb: "Open to any high school in the Cape Winelands, Eden & Central Karoo, Overberg and West Coast education districts.",
+      blurb: "Open to any high school in the Cape Winelands, Eden and Central Karoo, Overberg and West Coast education districts.",
       triggers: {
         matricSchools: [
           "Paul Roos Gymnasium",
@@ -163,7 +158,7 @@
     {
       id: "bishops", type: "school", name: "Bishops (Diocesan College) Scholarship",
       short: "Bishops",
-      blurb: "Open to any high school in the Cape Town Metro South education district, plus named partner schools incl. LEAP Langa.",
+      blurb: "Open to any high school in the Cape Town Metro South education district, plus named partner schools including LEAP Langa.",
       triggers: {
         matricSchools: [
           "Diocesan College (Bishops)",
@@ -190,9 +185,9 @@
     }
   ];
 
-  // Named partner schools the user can pick directly (school -> pool id).
-  // Used by the "did you matriculate from one of these schools?" question.
+  // Named partner schools the user can pick directly (school to pool id).
   var PARTNER_SCHOOLS = [
+    { name: "LEAP Science and Maths School (Langa)", pool: "bishops" },
     { name: "South African College School (SACS)", pool: "sacs" },
     { name: "Rustenburg Girls' High School", pool: "sacs" },
     { name: "Sans Souci Girls' High School", pool: "sacs" },
@@ -203,26 +198,28 @@
     { name: "Herschel Girls' School", pool: "bishops" },
     { name: "St Cyprian's School for Girls", pool: "bishops" },
     { name: "St George's Grammar School", pool: "bishops" },
-    { name: "LEAP Science and Maths School (Langa)", pool: "bishops" },
     { name: "St Andrew's College", pool: "standrews" },
     { name: "Diocesan School for Girls (DSG)", pool: "standrews" }
   ];
 
-  // Education-district / municipality options the user can pick if their exact
-  // school is not in the partner list. Maps a chosen zone -> school pool id.
+  // Education-district / municipality zones (chosen zone to school pool id).
   var SCHOOL_ZONES = [
     { id: "makhana", label: "Makhanda / Grahamstown (Makhana municipality)", pool: "standrews",
+      area: "Makhanda", district: "Makhana municipality",
       help: "Any high school in the Makhana municipality of the Eastern Cape." },
-    { id: "metro_south", label: "Cape Town — Metro South education district", pool: "bishops",
-      help: "WCED Metro South district (e.g. Mitchells Plain, Retreat, Grassy Park, Wynberg, Fish Hoek area)." },
-    { id: "cape_winelands", label: "Cape Winelands education district (incl. Stellenbosch, Paarl, Worcester)", pool: "paulroos",
-      help: "WCED Cape Winelands district — includes Stellenbosch, Drakenstein/Paarl, Breede Valley/Worcester, Witzenberg, Langeberg." },
-    { id: "eden_karoo", label: "Eden & Central Karoo education district (Garden Route / Karoo)", pool: "paulroos",
-      help: "WCED Eden & Central Karoo district (George, Mossel Bay, Oudtshoorn, Beaufort West, etc.)." },
-    { id: "overberg", label: "Overberg education district (Caledon, Hermanus, Swellendam)", pool: "paulroos",
-      help: "WCED Overberg district." },
-    { id: "west_coast", label: "West Coast education district (Vredenburg, Malmesbury, Vredendal)", pool: "paulroos",
-      help: "WCED West Coast district." }
+    { id: "metro_south", label: "Cape Town, Metro South education district", pool: "bishops",
+      area: "the Cape Town Metro South area", district: "Cape Town Metro South",
+      help: "WCED Metro South district. Includes schools such as Oscar Mpetha High (Nyanga), Fezeka, Masiphumelele, Mitchells Plain, Retreat, Grassy Park, Wynberg." },
+    { id: "cape_winelands", label: "Cape Winelands district (Stellenbosch, Paarl, Worcester)", pool: "paulroos",
+      area: "the Cape Winelands", district: "Cape Winelands",
+      help: "WCED Cape Winelands district. Includes Stellenbosch (Makupula, Kayamandi), Drakenstein/Paarl, Breede Valley/Worcester, Witzenberg, Langeberg." },
+    { id: "eden_karoo", label: "Eden and Central Karoo district (Garden Route, Karoo)", pool: "paulroos",
+      area: "the Eden and Central Karoo", district: "Eden and Central Karoo",
+      help: "WCED Eden and Central Karoo district (George, Mossel Bay, Oudtshoorn, Beaufort West)." },
+    { id: "overberg", label: "Overberg district (Caledon, Hermanus, Swellendam)", pool: "paulroos",
+      area: "the Overberg", district: "Overberg", help: "WCED Overberg district." },
+    { id: "west_coast", label: "West Coast district (Vredenburg, Malmesbury, Vredendal)", pool: "paulroos",
+      area: "the West Coast", district: "West Coast", help: "WCED West Coast district." }
   ];
 
   var UNIVERSITIES = [
@@ -231,62 +228,64 @@
   ];
 
   // ---------------------------------------------------------------------------
-  // IkamvaYouth branches -> province + (where known) WCED district + pool hints.
-  // districtConfidence drives the "please verify" UX. Verified against WCED
-  // district sources; see README. NOTE: the engine never trusts branch alone to
-  // promise a School pool — it asks the student's actual school/district.
+  // IkamvaYouth branches. Each branch is hosted at / linked to a specific high
+  // school (from ikamvayouth.org/branches), which tells us the education
+  // district and therefore the likely School pool. zone is a SCHOOL_ZONES id or
+  // null. The flow uses this to pre-fill the School pool, then asks the student
+  // to confirm (so a student who matriculated elsewhere is never mis-matched).
   // ---------------------------------------------------------------------------
   var BRANCHES = [
     // Western Cape
-    { branch: "Khayelitsha", province: "Western Cape", wcedDistrict: "Metro East", districtConfidence: "medium" },
-    { branch: "Nyanga", province: "Western Cape", wcedDistrict: "Metro Central", districtConfidence: "high" },
-    { branch: "Gugulethu", province: "Western Cape", wcedDistrict: "Metro Central", districtConfidence: "high" },
-    { branch: "Kayamandi (Stellenbosch)", province: "Western Cape", wcedDistrict: "Cape Winelands", districtConfidence: "high", schoolPoolHint: "paulroos" },
-    { branch: "Atlantis", province: "Western Cape", wcedDistrict: "Metro North", districtConfidence: "high" },
+    { branch: "Khayelitsha", province: "Western Cape", host: "Harry Gwala Secondary School",
+      zone: null, note: "Khayelitsha sits in the WCED Metro East district, which does not trigger a School pool by area, so most learners apply via the regional pool. If your own high school is in the Metro South district, you may still qualify for Bishops." },
+    { branch: "Nyanga", province: "Western Cape", host: "Oscar Mpetha High School", zone: "metro_south" },
+    { branch: "Gugulethu", province: "Western Cape", host: "Gugulethu Comprehensive School", zone: "metro_south", confidence: "medium" },
+    { branch: "Kayamandi (Stellenbosch)", province: "Western Cape", host: "Makupula Secondary School", zone: "cape_winelands" },
+    { branch: "Atlantis", province: "Western Cape", host: "Robinvale High School", zone: null,
+      note: "Atlantis sits in the WCED Metro North district, so most learners apply via the regional pool." },
     // Gauteng
-    { branch: "Tembisa", province: "Gauteng" },
-    { branch: "Mamelodi", province: "Gauteng" },
-    { branch: "Diepsloot", province: "Gauteng" },
+    { branch: "Tembisa", province: "Gauteng", host: "Kaalfontein Secondary School", zone: null },
+    { branch: "Mamelodi", province: "Gauteng", zone: null },
+    { branch: "Diepsloot", province: "Gauteng", zone: null },
     // KwaZulu-Natal
-    { branch: "Chesterville", province: "KwaZulu-Natal" },
-    { branch: "Umlazi", province: "KwaZulu-Natal" },
+    { branch: "Chesterville", province: "KwaZulu-Natal", zone: null },
     // Eastern Cape
-    { branch: "Joza (Makhanda)", province: "Eastern Cape", municipality: "Makhana (Makhanda / Grahamstown)", schoolPoolHint: "standrews" },
+    { branch: "Joza (Makhanda)", province: "Eastern Cape", host: "Nombulelo Secondary School", zone: "makhana" },
     // North West
-    { branch: "Ikageng", province: "North West" },
-    { branch: "Mahikeng", province: "North West" }
+    { branch: "Ikageng (Potchefstroom)", province: "North West", zone: null },
+    { branch: "Mahikeng", province: "North West", host: "Danville Secondary School", zone: null }
   ];
 
   // ---------------------------------------------------------------------------
   // Application document checklist (verified vs. 2027 Document Checklist + IFC)
   // ---------------------------------------------------------------------------
   var DOCUMENTS = [
-    { label: "Birth certificate", note: "A copy of your birth certificate — this is NOT your ID card." },
-    { label: "ID document or valid passport", note: "Non-Southern-African-born candidates also supply proof of citizenship / permanent residence / refugee status." },
-    { label: "Full university transcript", note: "From first to final year, to date." },
+    { label: "Birth certificate", note: "A copy of your birth certificate. This is NOT your ID card." },
+    { label: "ID document or valid passport", note: "Candidates not born in Southern Africa also supply proof of citizenship, permanent residence or refugee status." },
+    { label: "Full university transcript", note: "Showing your grades from first to final year, to date." },
     { label: "Degree certificate(s)", note: "If you have already graduated." },
     { label: "Matric / NSC certificate (UMALUSI)", note: "Your final Grade 12 results (IEB or NSC)." },
     { label: "Grade 12 Term 3/4 report", note: "ONLY if applying for a School scholarship (Bishops, Paul Roos, SACS, St Andrew's).", schoolOnly: true },
-    { label: "Curriculum Vitae (CV)", note: "Use the official editable PDF template. Max 2 pages, 12pt." },
-    { label: "Personal statement", note: "Max 1000 words — your story, in your own voice." },
-    { label: "Academic statement of study", note: "Max 450 words — your Oxford course plan and academic goals." },
+    { label: "Curriculum Vitae (CV)", note: "Use the official editable PDF template. Maximum 2 pages, 12pt." },
+    { label: "Personal statement", note: "Maximum 1000 words. Your story, in your own voice." },
+    { label: "Academic statement of study", note: "Maximum 450 words. Your Oxford course plan and academic goals." },
     { label: "Head-and-shoulders photo", note: "Colour, JPG format." },
-    { label: "Four referees", note: "Three academic referees + one character referee. (A high-school teacher does NOT count as academic.)" }
+    { label: "Four referees", note: "Three academic referees plus one character referee. A high-school teacher does NOT count as an academic referee." }
   ];
 
-  // The four Rhodes selection criteria (drawn from the founder's Will; verbatim framing from the IFC).
+  // The four Rhodes selection criteria (drawn from the founder's Will).
   var SELECTION_CRITERIA = [
-    { title: "Academic excellence", body: "You must at least meet the entry requirements of your chosen Oxford course; most successful applicants exceed them." },
-    { title: "Energy to use your talents to the full", body: "Shown through success in areas like sport, music, debate, dance, theatre and the arts — especially in a team." },
-    { title: "Truth, courage & devotion to duty", body: "Sympathy for and protection of the weak; kindliness, unselfishness and fellowship." },
-    { title: "Moral force of character & instinct to lead", body: "And to take a genuine interest in your fellow human beings." }
+    { title: "Academic excellence", body: "You must at least meet the entry requirements of your chosen Oxford course. Most successful applicants exceed them." },
+    { title: "Energy to use your talents to the full", body: "Shown through success in areas like sport, music, debate, dance, theatre and the arts, especially in a team." },
+    { title: "Truth, courage and devotion to duty", body: "Sympathy for and protection of the weak; kindliness, unselfishness and fellowship." },
+    { title: "Moral force of character and instinct to lead", body: "And to take a genuine interest in your fellow human beings." }
   ];
 
   // What the Scholarship covers (Conditions of Tenure summary).
   var COVERS = [
     "All University and college fees at Oxford",
-    "A generous annual living stipend (accommodation & food)",
-    "Return economy flights to the UK + a settling-in allowance",
+    "A generous annual living stipend (accommodation and food)",
+    "Return economy flights to the UK plus a settling-in allowance",
     "UK student visa costs and the health surcharge",
     "At least two years of study at the University of Oxford"
   ];
@@ -306,11 +305,16 @@
     COVERS: COVERS
   };
 
-  // Convenience: look up a pool object by id.
   RHODES.DATA.poolById = function (id) {
-    for (var i = 0; i < POOLS.length; i++) {
-      if (POOLS[i].id === id) return POOLS[i];
-    }
+    for (var i = 0; i < POOLS.length; i++) if (POOLS[i].id === id) return POOLS[i];
+    return null;
+  };
+  RHODES.DATA.zoneById = function (id) {
+    for (var i = 0; i < SCHOOL_ZONES.length; i++) if (SCHOOL_ZONES[i].id === id) return SCHOOL_ZONES[i];
+    return null;
+  };
+  RHODES.DATA.branchByName = function (name) {
+    for (var i = 0; i < BRANCHES.length; i++) if (BRANCHES[i].branch === name) return BRANCHES[i];
     return null;
   };
 })(typeof window !== "undefined" ? window : globalThis);
