@@ -1,0 +1,15 @@
+{
+  "name": "IkamvaYouth × Rhodes — Eligibility Checker",
+  "short_name": "Rhodes4Ikamva",
+  "description": "Check in 2 minutes if you can apply for a Rhodes Scholarship to Oxford. Free, no application fee.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f8fa",
+  "theme_color": "#15233b",
+  "lang": "en-ZA",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

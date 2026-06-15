@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<title>Rhodes4Ikamva — one-pager</title>
+<style>
+  /* Self-contained so it exports identically. Sheet is exactly 1080×1920 (9:16). */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #15233b; --teal: #0b8f86; --teal-d: #086c65; --gold: #f4b223;
+    --coral: #ee6c4d; --rhodes: #16284f; --paper: #ffffff; --muted: #5b6b7d;
+  }
+  html, body { background: #e9edf1; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; display: flex; justify-content: center; }
+  .sheet {
+    width: 1080px; height: 1920px; background: var(--paper); position: relative;
+    overflow: hidden; color: var(--ink); display: flex; flex-direction: column;
+  }
+
+  /* Header */
+  .head { background: var(--ink); color: #fff; padding: 54px 64px 40px; }
+  .lockup { font-size: 44px; font-weight: 800; letter-spacing: -.5px; }
+  .lockup .iy { color: #43c9bd; } .lockup .x { color: #8aa0b6; margin: 0 10px; } .lockup .rh { color: #ffffff; }
+  .tag { margin-top: 10px; font-size: 24px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #9fb2c6; }
+  .zig { height: 16px; background:
+    linear-gradient(135deg, var(--teal) 25%, transparent 25%) -20px 0/40px 16px,
+    linear-gradient(225deg, var(--teal) 25%, transparent 25%) -20px 0/40px 16px, var(--gold); }
+
+  /* Body */
+  .body { padding: 56px 64px 0; flex: 1; display: flex; flex-direction: column; }
+  .eyebrow { color: var(--teal-d); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; font-size: 26px; }
+  h1 { font-size: 96px; line-height: 1.02; letter-spacing: -2px; margin: 16px 0 22px; }
+  h1 .hl { color: var(--teal-d); }
+  .pill { display: inline-block; background: #e7f6ee; color: #137a4b; font-weight: 800; font-size: 30px; padding: 12px 30px; border-radius: 999px; }
+  .teaser { font-size: 33px; line-height: 1.45; color: #243; margin: 30px 0 14px; }
+  .teaser b { color: var(--ink); }
+
+  /* Branch table */
+  .tbl { border: 3px solid #e3e8ee; border-radius: 22px; overflow: hidden; margin-top: 14px; }
+  .tbl .row { display: flex; align-items: center; border-bottom: 2px solid #eef2f6; }
+  .tbl .row:last-child { border-bottom: 0; }
+  .tbl .row:nth-child(even) { background: #f7fafb; }
+  .tbl .b { flex: 1.25; padding: 22px 28px; font-size: 30px; font-weight: 600; }
+  .tbl .arr { color: var(--gold); font-size: 34px; font-weight: 800; padding: 0 6px; }
+  .tbl .s { flex: 1; padding: 22px 28px; font-size: 30px; font-weight: 800; color: var(--teal-d); text-align: right; }
+  .foot-note { font-size: 23px; color: var(--muted); margin: 16px 4px 0; line-height: 1.4; }
+
+  /* Deadline + CTA */
+  .cta { display: flex; align-items: center; gap: 34px; margin-top: auto; padding: 40px 0 30px; }
+  .qr { width: 240px; height: 240px; flex: 0 0 auto; border: 4px solid var(--ink); border-radius: 18px; background: #fff; display: grid; place-items: center; overflow: hidden; }
+  .qr img { width: 100%; height: 100%; object-fit: contain; }
+  .qr .ph { font-size: 26px; color: var(--muted); text-align: center; padding: 10px; }
+  .cta .txt { flex: 1; }
+  .deadline { font-size: 40px; font-weight: 800; color: #b3261e; line-height: 1.15; }
+  .deadline .d { font-size: 58px; display: block; }
+  .url { margin-top: 14px; font-size: 32px; font-weight: 700; color: var(--ink); }
+  .url small { display: block; font-size: 25px; font-weight: 600; color: var(--muted); }
+
+  /* Footer */
+  .disc { background: var(--ink); color: #aebccd; font-size: 21px; line-height: 1.5; padding: 26px 64px 30px; }
+  .disc b { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="head">
+      <div class="lockup"><span class="iy">IkamvaYouth</span><span class="x">×</span><span class="rh">Rhodes</span></div>
+      <div class="tag">The future is in our hands</div>
+    </div>
+    <div class="zig"></div>
+
+    <div class="body">
+      <div class="eyebrow">IkamvaYouth → Oxford</div>
+      <h1>You could be a <span class="hl">Rhodes&nbsp;Scholar.</span></h1>
+      <span class="pill">★ Fully funded · No application fee</span>
+
+      <div class="teaser">
+        The four South African <b>“School” scholarships have been expanded</b> — they now reach whole
+        districts and universities, many in IkamvaYouth's communities. Where do <b>you</b> fit?
+      </div>
+
+      <div class="tbl">
+        <div class="row"><div class="b">Joza / Makhanda branch</div><div class="arr">→</div><div class="s">St Andrew's</div></div>
+        <div class="row"><div class="b">Any Ikamva alum at UCT</div><div class="arr">→</div><div class="s">SACS</div></div>
+        <div class="row"><div class="b">Kayamandi / Stellenbosch</div><div class="arr">→</div><div class="s">Paul Roos</div></div>
+        <div class="row"><div class="b">Other Western Cape branches</div><div class="arr">→</div><div class="s">W. Cape &amp; N. Cape*</div></div>
+        <div class="row"><div class="b">Gauteng &amp; North-West branches</div><div class="arr">→</div><div class="s">GLMN</div></div>
+        <div class="row"><div class="b">KZN branches</div><div class="arr">→</div><div class="s">KwaZulu-Natal</div></div>
+      </div>
+      <div class="foot-note">*The Bishops pool covers Cape Town Metro South &amp; partner schools (incl. LEAP Langa). Not sure where you fit? The app checks for you in 2 minutes.</div>
+
+      <div class="cta">
+        <div class="qr">
+          <img id="qr" src="qr.png" alt="Scan to check your eligibility" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+          <div class="ph" style="display:none">QR<br>here</div>
+        </div>
+        <div class="txt">
+          <div class="deadline"><span class="d">Apply by 3 August 2026</span>Don't wait — start early (load-shedding season!)</div>
+          <div class="url"><span id="appurl">rhodes4ikamva.pages.dev</span><small>Scan or visit to check if you qualify</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="disc">
+      <b>Guidance tool — not an official Rhodes channel.</b> The four School scholarships are funded as interim
+      Rhodes Scholarships this cycle, pending Charity Commission approval. Always confirm on rhodeshouse.ox.ac.uk.
+    </div>
+  </div>
+</body>
+</html>

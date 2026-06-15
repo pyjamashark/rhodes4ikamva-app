@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rhodes4Ikamva">
+  <rect width="64" height="64" rx="14" fill="#0b8f86"/>
+  <path d="M32 15 L53 25 L32 35 L11 25 Z" fill="#f4b223"/>
+  <path d="M20 30 v8.5 c0 4.5 24 4.5 24 0 V30" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <line x1="53" y1="25" x2="53" y2="39" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="53" cy="41" r="2.4" fill="#ffffff"/>
+</svg>

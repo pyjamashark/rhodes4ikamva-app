@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Could you be a Rhodes Scholar? — IkamvaYouth × Rhodes</title>
+  <meta name="description" content="A free 2-minute tool for IkamvaYouth students and alumni to check if you can apply for a Rhodes Scholarship to Oxford — fully funded, no application fee. Applications close 3 August 2026.">
+  <meta name="theme-color" content="#15233b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <!-- Social / WhatsApp link preview -->
+  <meta property="og:title" content="Could you be a Rhodes Scholar?">
+  <meta property="og:description" content="IkamvaYouth × Rhodes — check your eligibility in 2 minutes. Fully funded study at Oxford. Apply by 3 August 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/og-image.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap brandbar">
+      <span class="brand">
+        <span><span class="b-iy">IkamvaYouth</span> <span class="brand-x">×</span> <span class="b-rhodes">Rhodes</span></span>
+        <span class="b-tag">The future is in our hands</span>
+      </span>
+      <span class="spacer"></span>
+      <button class="navlink" data-go="about" type="button">About</button>
+      <button class="navlink" data-go="faq" type="button">FAQ</button>
+    </div>
+  </header>
+  <div class="zigzag" aria-hidden="true"></div>
+
+  <main id="main">
+    <!-- ============ HOME ============ -->
+    <section id="home" class="wrap" aria-labelledby="home-h">
+      <div class="hero">
+        <p class="eyebrow">IkamvaYouth → Oxford</p>
+        <h1 id="home-h">You could be a Rhodes&nbsp;Scholar.</h1>
+        <p class="lead">Fully-funded postgraduate study at the University of Oxford. Let's check if you can apply — it takes about 2 minutes.</p>
+        <span class="free-pill">★ Free to apply — no application fee</span>
+      </div>
+
+      <div id="countdown" class="countdown" aria-live="polite" hidden></div>
+      <p id="cd-caption" class="cd-caption" hidden></p>
+
+      <div class="btn-row">
+        <button class="btn btn-primary btn-block" id="start-check" type="button">Check my eligibility →</button>
+        <button class="btn btn-ghost btn-block" data-go="about" type="button">What is the Rhodes Scholarship?</button>
+      </div>
+
+      <div class="card">
+        <h2>Why IkamvaYouth students?</h2>
+        <p class="muted">The four South African “School” scholarships have been <strong>expanded</strong> — they now reach whole education districts and partner universities, several overlapping IkamvaYouth's communities. If you've shown academic excellence and a commitment to others, this could be for you.</p>
+      </div>
+    </section>
+
+    <!-- ============ CHECK (rendered by app.js) ============ -->
+    <section id="check" class="wrap" aria-labelledby="check-h" hidden>
+      <h1 id="check-h" class="sr-only" style="position:absolute;left:-999px">Eligibility check</h1>
+      <div id="progress" class="progress" aria-hidden="true"></div>
+      <div id="q-container" aria-live="polite"></div>
+    </section>
+
+    <!-- ============ RESULT (rendered by app.js) ============ -->
+    <section id="result" class="wrap" aria-labelledby="result-h" hidden>
+      <div id="result-container" aria-live="polite"></div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="wrap" aria-labelledby="about-h" hidden>
+      <h1 id="about-h">About the Rhodes Scholarship</h1>
+      <p>The Rhodes Scholarship (established 1902) is one of the world's oldest and most prestigious international scholarships. It funds postgraduate study at the University of Oxford for at least two years.</p>
+
+      <div class="card">
+        <h2>What it covers</h2>
+        <div id="covers-list"></div>
+      </div>
+
+      <div class="card">
+        <h2>What selectors look for</h2>
+        <p class="muted small">The four criteria, drawn from the founder's Will, have barely changed in 100 years:</p>
+        <div id="criteria-list"></div>
+      </div>
+
+      <div class="you-belong">
+        <h3>There's no single “type” of Rhodes Scholar</h3>
+        <p>For over 120 years, personal statements have been diverse and ever-changing. Selectors look for an original portrait of <em>you</em> — your voice, your story, your authentic self. IkamvaYouth's culture of leadership and service is exactly what they value.</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary btn-block" data-go="check" id="about-start" type="button">Check my eligibility →</button>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq" class="wrap" aria-labelledby="faq-h" hidden>
+      <h1 id="faq-h">Questions &amp; answers</h1>
+
+      <details class="faq"><summary>Is it really free?</summary>
+        <p>Yes. There is <strong>no application fee</strong> for the Rhodes Scholarship, and this tool is free too.</p></details>
+
+      <details class="faq"><summary>What is a “School” scholarship and why does it matter to me?</summary>
+        <p>Four scholarships were historically tied to specific schools. They've been opened up to whole education districts and partner universities. For example: any high school in the <strong>Makhanda (Makhana)</strong> area now qualifies for the <strong>St Andrew's</strong> pool, and <strong>UCT</strong> graduates qualify for <strong>SACS</strong>. The checker works out which apply to you.</p></details>
+
+      <details class="faq"><summary>Can I apply to more than one?</summary>
+        <p>Yes — up to <strong>two pools</strong>: usually one School pool plus your regional pool. You cannot apply to two School pools. BLMNS (Botswana, Lesotho, Malawi, Namibia, eSwatini) applicants apply to the BLMNS pool only.</p></details>
+
+      <details class="faq"><summary>I'm not sure which education district my school is in.</summary>
+        <p>No problem — the checker will still show your regional pool (your safe baseline), and flag that a coordinator can help you confirm whether a School pool also applies.</p></details>
+
+      <details class="faq"><summary>What does “interim scholarship” mean?</summary>
+        <p id="faq-disclaimer"></p></details>
+
+      <details class="faq"><summary>What if I'm not eligible yet?</summary>
+        <p>Look at the <a id="mrf-link" href="#" target="_blank" rel="noopener">Mandela Rhodes Foundation</a> — it funds Honours/Master's study and is a great stepping stone. You can apply for the Rhodes later.</p></details>
+
+      <details class="faq"><summary>Any tips for applying?</summary>
+        <p>Start early and save your work often (load-shedding!). Line up your four referees (three academic + one character) as soon as you can, and prepare your documents before the portal gets busy.</p></details>
+
+      <div class="btn-row">
+        <button class="btn btn-primary btn-block" data-go="check" type="button">Check my eligibility →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="disc" id="foot-notofficial"></p>
+      <p class="disc" id="foot-disclaimer"></p>
+      <p>Official info: <a href="https://www.rhodeshouse.ox.ac.uk/scholarships/the-rhodes-scholarship/" target="_blank" rel="noopener">rhodeshouse.ox.ac.uk</a> · IkamvaYouth: <a href="https://ikamvayouth.org/" target="_blank" rel="noopener">ikamvayouth.org</a></p>
+      <p class="muted" id="foot-updated"></p>
+    </div>
+  </footer>
+
+  <noscript>
+    <div class="wrap">
+      <div class="note note-warn"><strong>This checker needs JavaScript.</strong>
+        You can still apply: you must be a citizen/permanent resident of South Africa, Botswana, Lesotho, Malawi, Namibia or eSwatini, aged 19–24 (some up to 28), with a Bachelor's degree by July 2027. Applications close 23:59 SAST on 3 August 2026. See <a href="https://www.rhodeshouse.ox.ac.uk/scholarships/the-rhodes-scholarship/">rhodeshouse.ox.ac.uk</a>.</div>
+    </div>
+  </noscript>
+
+  <!-- Classic scripts (no build step, work over file:// and https) -->
+  <script src="js/data.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
