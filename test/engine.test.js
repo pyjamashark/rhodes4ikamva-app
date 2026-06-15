@@ -155,6 +155,26 @@ console.log("\nRhodes4Ikamva engine tests\n");
   check("Kayamandi -> cape_winelands", D.branchByName("Kayamandi (Stellenbosch)").zone === "cape_winelands");
 })();
 
+// 15. Pool priority: Bishops (district) is recommended ahead of SACS (UCT)
+(function () {
+  var r = evaluate({ citizenship: "South Africa", residency5of10: true, dob: "2003-05-05",
+    degreeByJuly2027: "yes", province: "Western Cape", branch: "Masiphumelele",
+    schoolZone: "metro_south", schoolFromBranch: true, university: "University of Cape Town (UCT)" });
+  console.log("Persona 15: Masi (Bishops) + UCT (SACS)");
+  check("Bishops is the recommended School pool (priority over SACS)", r.recommended[0].poolId === "bishops");
+  check("recommends Bishops + WC&NC", sameSet(ids(r.recommended), ["bishops", "wc_nc"]));
+  check("SACS is listed as also-eligible, not primary", r.alsoEligible.some(function (p) { return p.poolId === "sacs"; }));
+})();
+
+// 16. Pool priority among School pools follows Bishops < Paul Roos < St Andrew's < SACS
+(function () {
+  var r = evaluate({ citizenship: "South Africa", residency5of10: true, dob: "2003-05-05",
+    degreeByJuly2027: "yes", province: "Western Cape",
+    partnerSchool: "St Andrew's College", schoolZone: "cape_winelands", university: "University of Cape Town (UCT)" });
+  console.log("Persona 16: matches Paul Roos + St Andrew's + SACS");
+  check("Paul Roos wins (highest priority of the three)", r.recommended[0].poolId === "paulroos");
+})();
+
 // Global invariants across a sweep
 (function () {
   console.log("Invariants");

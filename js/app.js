@@ -233,11 +233,15 @@
       build: function () {
         var zone = DATA.zoneById(answers.branchZone);
         var poolShort = DATA.poolById(zone.pool).short;
+        var br = DATA.branchByName(answers.branch);
+        var host = br && br.host ? br.host : null;
         return {
           legend: "You are at the " + answers.branch + " branch, in " + zone.area + " (" + zone.district + " education district).",
-          help: "High schools in this area can qualify for the " + poolShort + " scholarship.",
+          help: (host ? "Your branch is linked to " + host + ". " : "") + "High schools in this area qualify for the " + poolShort + " scholarship.",
           choices: [
-            { main: "Yes, I finished Grade 12 at a school in " + zone.area, patch: { schoolZone: answers.branchZone, schoolFromBranch: true } },
+            { main: host ? "Yes, I matriculated at " + host : "Yes, I matriculated at a school in this area",
+              sub: host ? "or another school in " + zone.area : null,
+              patch: { schoolZone: answers.branchZone, schoolFromBranch: true } },
             { main: "No, I matriculated at a different school or area", patch: { schoolConfirmOther: true } }
           ]
         };

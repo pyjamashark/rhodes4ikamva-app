@@ -185,6 +185,11 @@
     }
   ];
 
+  // Order in which to recommend School pools when a candidate matches more than
+  // one (smallest / least-competitive pool first, per organiser guidance). A
+  // candidate may only ever apply to ONE School pool, so this picks which.
+  var SCHOOL_PRIORITY = ["bishops", "paulroos", "standrews", "sacs"];
+
   // Named partner schools the user can pick directly (school to pool id).
   var PARTNER_SCHOOLS = [
     { name: "LEAP Science and Maths School (Langa)", pool: "bishops" },
@@ -298,6 +303,7 @@
     PROVINCES: PROVINCES,
     PROVINCE_TO_REGION: PROVINCE_TO_REGION,
     POOLS: POOLS,
+    SCHOOL_PRIORITY: SCHOOL_PRIORITY,
     PARTNER_SCHOOLS: PARTNER_SCHOOLS,
     SCHOOL_ZONES: SCHOOL_ZONES,
     UNIVERSITIES: UNIVERSITIES,

@@ -169,14 +169,18 @@
     }
 
     // ---- 4. Combination rules (max 2 pools; at most ONE School pool) --------
-    var schoolIds = Object.keys(schoolMatches);
-    var bestSchoolId = null, bestRank = -1;
-    for (var s = 0; s < schoolIds.length; s++) {
-      if (schoolMatches[schoolIds[s]].rank > bestRank) {
-        bestRank = schoolMatches[schoolIds[s]].rank;
-        bestSchoolId = schoolIds[s];
-      }
+    // When a candidate matches more than one School pool, recommend the one
+    // highest in SCHOOL_PRIORITY (smallest / best-odds pool first: Bishops,
+    // Paul Roos, St Andrew's, SACS), regardless of HOW it was matched. So a
+    // Metro South learner who also attended UCT is steered to Bishops, not SACS.
+    function schoolPriority(id) {
+      var i = D.SCHOOL_PRIORITY.indexOf(id);
+      return i === -1 ? 99 : i;
     }
+    var schoolIds = Object.keys(schoolMatches).sort(function (a, b) {
+      return schoolPriority(a) - schoolPriority(b);
+    });
+    var bestSchoolId = schoolIds.length ? schoolIds[0] : null;
 
     if (bestSchoolId) {
       var bestSchool = D.poolById(bestSchoolId);
@@ -188,14 +192,12 @@
     }
     if (regionRec) result.recommended.push(regionRec);
 
-    for (var k = 0; k < schoolIds.length; k++) {
-      if (schoolIds[k] !== bestSchoolId) {
-        var other = D.poolById(schoolIds[k]);
-        result.alsoEligible.push({
-          poolId: schoolIds[k], name: other.name,
-          reason: schoolMatches[schoolIds[k]].reason
-        });
-      }
+    for (var k = 1; k < schoolIds.length; k++) {
+      var other = D.poolById(schoolIds[k]);
+      result.alsoEligible.push({
+        poolId: schoolIds[k], name: other.name,
+        reason: schoolMatches[schoolIds[k]].reason
+      });
     }
     if (result.alsoEligible.length) {
       result.verifyNotes.push(
