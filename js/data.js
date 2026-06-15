@@ -209,7 +209,7 @@
       help: "Any high school in the Makhana municipality of the Eastern Cape." },
     { id: "metro_south", label: "Cape Town, Metro South education district", pool: "bishops",
       area: "the Cape Town Metro South area", district: "Cape Town Metro South",
-      help: "WCED Metro South district. Includes schools such as Oscar Mpetha High (Nyanga), Fezeka, Masiphumelele, Mitchells Plain, Retreat, Grassy Park, Wynberg." },
+      help: "WCED Metro South district. Includes schools such as Oscar Mpetha High (Nyanga), Masiphumelele High, Mitchells Plain, Retreat, Grassy Park, Wynberg." },
     { id: "cape_winelands", label: "Cape Winelands district (Stellenbosch, Paarl, Worcester)", pool: "paulroos",
       area: "the Cape Winelands", district: "Cape Winelands",
       help: "WCED Cape Winelands district. Includes Stellenbosch (Makupula, Kayamandi), Drakenstein/Paarl, Breede Valley/Worcester, Witzenberg, Langeberg." },
@@ -235,14 +235,16 @@
   // to confirm (so a student who matriculated elsewhere is never mis-matched).
   // ---------------------------------------------------------------------------
   var BRANCHES = [
-    // Western Cape
+    // Western Cape  (districts verified against the WCED find-a-school tool)
     { branch: "Khayelitsha", province: "Western Cape", host: "Harry Gwala Secondary School",
-      zone: null, note: "Khayelitsha sits in the WCED Metro East district, which does not trigger a School pool by area, so most learners apply via the regional pool. If your own high school is in the Metro South district, you may still qualify for Bishops." },
+      zone: null, note: "Harry Gwala Secondary (Khayelitsha) is in the WCED Metro East district, which does not trigger a School pool, so learners apply via the regional pool. If your own high school is in the Metro South district, you may still qualify for Bishops." },
     { branch: "Nyanga", province: "Western Cape", host: "Oscar Mpetha High School", zone: "metro_south" },
-    { branch: "Gugulethu", province: "Western Cape", host: "Gugulethu Comprehensive School", zone: "metro_south", confidence: "medium" },
+    { branch: "Masiphumelele", province: "Western Cape", host: "Masiphumelele High School", zone: "metro_south" },
+    { branch: "Gugulethu", province: "Western Cape", host: "Intshukumo Secondary School", zone: null,
+      note: "Gugulethu high schools (Intshukumo, Fezeka, I.D. Mkize) are in the WCED Metro Central district, which does not trigger a School pool, so learners apply via the regional pool." },
     { branch: "Kayamandi (Stellenbosch)", province: "Western Cape", host: "Makupula Secondary School", zone: "cape_winelands" },
     { branch: "Atlantis", province: "Western Cape", host: "Robinvale High School", zone: null,
-      note: "Atlantis sits in the WCED Metro North district, so most learners apply via the regional pool." },
+      note: "Robinvale High (Atlantis) is in the WCED Metro North district, so learners apply via the regional pool." },
     // Gauteng
     { branch: "Tembisa", province: "Gauteng", host: "Kaalfontein Secondary School", zone: null },
     { branch: "Mamelodi", province: "Gauteng", zone: null },

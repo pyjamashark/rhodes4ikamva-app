@@ -143,6 +143,18 @@ console.log("\nRhodes4Ikamva engine tests\n");
   check("adds a branch-area confirm note", r.verifyNotes.some(function (n) { return /branch's area/i.test(n); }));
 })();
 
+// 14. Branch -> zone mapping (verified against the WCED find-a-school tool)
+(function () {
+  var D = globalThis.RHODES.DATA;
+  console.log("Branch zone mapping (WCED-verified)");
+  check("Nyanga (Oscar Mpetha) -> metro_south", D.branchByName("Nyanga").zone === "metro_south");
+  check("Masiphumelele -> metro_south", (D.branchByName("Masiphumelele") || {}).zone === "metro_south");
+  check("Gugulethu -> null (Metro Central)", D.branchByName("Gugulethu").zone === null);
+  check("Khayelitsha -> null (Metro East)", D.branchByName("Khayelitsha").zone === null);
+  check("Atlantis -> null (Metro North)", D.branchByName("Atlantis").zone === null);
+  check("Kayamandi -> cape_winelands", D.branchByName("Kayamandi (Stellenbosch)").zone === "cape_winelands");
+})();
+
 // Global invariants across a sweep
 (function () {
   console.log("Invariants");
