@@ -18,7 +18,8 @@
   };
   var LINKS = {
     branchTeam: "https://ikamvayouth.org/our-team/",
-    bishopsForm: "https://forms.gle/nQ4Huc1uGN5xqmN57" // Bishops interest form ("Going for the Bishops Rhodes Scholarship? Register here")
+    bishopsForm: "https://forms.gle/nQ4Huc1uGN5xqmN57", // Bishops interest form ("Going for the Bishops Rhodes Scholarship? Register here")
+    bishopsInfo: "assets/Bishops_info.pdf" // official Bishops Rhodes Scholarship info sheet
   };
   var UPDATED = "16 June 2026";
 
@@ -403,11 +404,15 @@
       el("h3", { text: "Going for the Bishops Scholarship?" }),
       el("p", { class: "muted", text: "A team of volunteers is offering to support strong Bishops applicants this year. Register your interest and one of us will get in touch to help you put your best application forward." })
     ]);
+    var row = el("div", { class: "btn-row" });
     if (LINKS.bishopsForm) {
-      card.appendChild(el("div", { class: "btn-row" }, [
-        el("a", { class: "btn btn-gold btn-block", href: LINKS.bishopsForm, target: "_blank", rel: "noopener" }, "Register your interest")
-      ]));
-    } else {
+      row.appendChild(el("a", { class: "btn btn-gold btn-block", href: LINKS.bishopsForm, target: "_blank", rel: "noopener" }, "Register your interest"));
+    }
+    if (LINKS.bishopsInfo) {
+      row.appendChild(el("a", { class: "btn btn-ghost btn-block", href: LINKS.bishopsInfo, target: "_blank", rel: "noopener" }, "Read the Bishops info sheet (PDF)"));
+    }
+    card.appendChild(row);
+    if (!LINKS.bishopsForm) {
       card.appendChild(el("div", { class: "note note-info", text: "Our sign-up form is coming soon. For now, reach your branch team below and mention you are interested in Bishops." }));
     }
     return card;
