@@ -1,5 +1,5 @@
 /* Simple offline-first service worker. Bump CACHE when files change. */
-var CACHE = "r4i-v8";
+var CACHE = "r4i-v9";
 var ASSETS = [
   "./",
   "index.html",

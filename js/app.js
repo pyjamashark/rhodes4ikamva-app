@@ -134,8 +134,8 @@
         });
         opts.push({ main: "I am not at an IkamvaYouth branch / other", patch: { branch: "other", branchZone: null } });
         return {
-          legend: "Which IkamvaYouth branch are you part of?",
-          help: "This helps us point you to the right scholarship. Choose 'other' if it does not apply.",
+          legend: "Which IkamvaYouth branch did you attend?",
+          help: "The branch where you went to after-school sessions. This helps us point you to the right scholarship. Choose 'other' if it does not apply.",
           choices: opts
         };
       }

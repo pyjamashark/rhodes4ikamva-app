@@ -39,7 +39,7 @@
       "their full tenure regardless of the outcome.",
 
     notOfficial:
-      "This is a free guidance tool made to help IkamvaYouth students. It is not an official " +
+      "This is a free guidance tool made to help IkamvaYouth alumni. It is not an official " +
       "Rhodes Trust channel. Always confirm details on the official Rhodes website."
   };
 
