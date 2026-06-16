@@ -103,8 +103,8 @@ section[hidden] { display: none !important; }
 /* Co-brand logo lockup (real logos) */
 .cobrand { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 6px 0 18px; flex-wrap: wrap; }
 .cobrand img { display: block; }
-.cobrand .cb-iy { height: 78px; width: auto; border-radius: 12px; }
-.cobrand .cb-rh { height: 50px; width: auto; background: #fff; padding: 7px 10px; border-radius: 10px; box-shadow: var(--shadow); }
+.cobrand .cb-iy { height: 88px; width: auto; border-radius: 12px; }
+.cobrand .cb-rh { height: 84px; width: auto; }
 .cobrand .cb-x { color: var(--muted); font-weight: 700; font-size: 1.2rem; }
 
 /* ---- Countdown ---------------------------------------------------------- */

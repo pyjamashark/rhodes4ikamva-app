@@ -7,8 +7,8 @@
   /* Self-contained so it exports identically. Sheet is exactly 1080x1920 (9:16). */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --ink: #161b27; --teal: #2433be; --teal-d: #1b2690; --gold: #f9c200;
-    --coral: #ee6c4d; --rhodes: #2433be; --paper: #ffffff; --muted: #5b6b7d;
+    --ink: #161b27; --blue: #2027a7; --blue-d: #181d7a; --gold: #f9c200;
+    --paper: #ffffff; --muted: #5b6b7d;
   }
   html, body { background: #e9edf1; }
   body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; display: flex; justify-content: center; }
@@ -17,52 +17,58 @@
     overflow: hidden; color: var(--ink); display: flex; flex-direction: column;
   }
 
-  .head { background: var(--ink); color: #fff; padding: 54px 64px 40px; }
-  .lockup { font-size: 44px; font-weight: 800; letter-spacing: -.5px; }
-  .lockup .iy { color: #f9c200; } .lockup .x { color: #8aa0b6; margin: 0 10px; } .lockup .rh { color: #ffffff; }
-  .tag { margin-top: 10px; font-size: 24px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #9fb2c6; }
-  .zig { height: 16px; background:
-    linear-gradient(135deg, var(--teal) 25%, transparent 25%) -20px 0/40px 16px,
-    linear-gradient(225deg, var(--teal) 25%, transparent 25%) -20px 0/40px 16px, var(--gold); }
+  /* white logo header */
+  .head { background: #ffffff; padding: 58px 64px 30px; }
+  .logos { display: flex; align-items: center; justify-content: center; gap: 46px; }
+  .logos .l-iy { height: 172px; width: auto; }
+  .logos .l-rh { height: 150px; width: auto; }
+  .logos .x { font-size: 66px; font-weight: 700; color: #b3c0cf; }
+  .head .tag { text-align: center; margin-top: 24px; font-size: 25px; font-weight: 800; letter-spacing: 5px; text-transform: uppercase; color: var(--blue); }
 
-  .body { padding: 56px 64px 0; flex: 1; display: flex; flex-direction: column; }
-  .eyebrow { color: var(--teal-d); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; font-size: 26px; }
-  h1 { font-size: 96px; line-height: 1.02; letter-spacing: -2px; margin: 16px 0 22px; }
-  h1 .hl { color: var(--teal-d); }
+  .zig { height: 16px; background:
+    linear-gradient(135deg, var(--blue) 25%, transparent 25%) -20px 0/40px 16px,
+    linear-gradient(225deg, var(--blue) 25%, transparent 25%) -20px 0/40px 16px, var(--gold); }
+
+  .body { padding: 48px 64px 0; flex: 1; display: flex; flex-direction: column; }
+  .eyebrow { color: var(--blue); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; font-size: 26px; }
+  h1 { font-size: 94px; line-height: 1.02; letter-spacing: -2px; margin: 14px 0 20px; }
+  h1 .hl { color: var(--blue); }
   .pill { display: inline-block; background: #e7f6ee; color: #137a4b; font-weight: 800; font-size: 30px; padding: 12px 30px; border-radius: 999px; }
-  .teaser { font-size: 33px; line-height: 1.45; color: #243; margin: 30px 0 14px; }
+  .teaser { font-size: 33px; line-height: 1.45; color: #243; margin: 28px 0 14px; }
   .teaser b { color: var(--ink); }
 
-  .tbl { border: 3px solid #e3e8ee; border-radius: 22px; overflow: hidden; margin-top: 14px; }
+  .tbl { border: 3px solid #e3e8ee; border-radius: 22px; overflow: hidden; margin-top: 12px; }
   .tbl .row { display: flex; align-items: center; border-bottom: 2px solid #eef2f6; }
   .tbl .row:last-child { border-bottom: 0; }
   .tbl .row:nth-child(even) { background: #f7fafb; }
-  .tbl .b { flex: 1.3; padding: 20px 28px; font-size: 29px; font-weight: 600; }
+  .tbl .b { flex: 1.3; padding: 19px 28px; font-size: 29px; font-weight: 600; }
   .tbl .arr { color: var(--gold); font-size: 34px; font-weight: 800; padding: 0 6px; }
-  .tbl .s { flex: 1; padding: 20px 28px; font-size: 29px; font-weight: 800; color: var(--teal-d); text-align: right; }
+  .tbl .s { flex: 1; padding: 19px 28px; font-size: 29px; font-weight: 800; color: var(--blue); text-align: right; }
   .foot-note { font-size: 23px; color: var(--muted); margin: 16px 4px 0; line-height: 1.4; }
 
-  .cta { display: flex; align-items: center; gap: 34px; margin-top: auto; padding: 40px 0 30px; }
-  .qr { width: 240px; height: 240px; flex: 0 0 auto; border: 4px solid var(--ink); border-radius: 18px; background: #fff; display: grid; place-items: center; overflow: hidden; }
+  .cta { display: flex; align-items: center; gap: 34px; margin-top: auto; padding: 36px 0 30px; }
+  .qr { width: 234px; height: 234px; flex: 0 0 auto; border: 4px solid var(--ink); border-radius: 18px; background: #fff; display: grid; place-items: center; overflow: hidden; }
   .qr img { width: 100%; height: 100%; object-fit: contain; }
-  .qr .ph { font-size: 26px; color: var(--muted); text-align: center; padding: 10px; }
   .cta .txt { flex: 1; }
   .deadline { font-size: 40px; font-weight: 800; color: #b3261e; line-height: 1.15; }
-  .deadline .d { font-size: 58px; display: block; }
-  .url { margin-top: 14px; font-size: 32px; font-weight: 700; color: var(--ink); }
+  .deadline .d { font-size: 56px; display: block; }
+  .url { margin-top: 14px; font-size: 38px; font-weight: 800; color: var(--blue); }
   .url small { display: block; font-size: 25px; font-weight: 600; color: var(--muted); }
 
   .disc { background: var(--ink); color: #aebccd; font-size: 21px; line-height: 1.5; padding: 26px 64px 30px; }
   .disc b { color: #fff; }
 
-  /* single custom-size page for a clean PDF that matches the poster */
   @media print { @page { size: 285mm 507mm; margin: 0; } html, body { background: #fff; } }
 </style>
 </head>
 <body>
   <div class="sheet">
     <div class="head">
-      <div class="lockup"><span class="iy">IkamvaYouth</span><span class="x">×</span><span class="rh">Rhodes</span></div>
+      <div class="logos">
+        <img class="l-iy" src="../assets/ikamvayouth_logo.jpg" alt="IkamvaYouth">
+        <span class="x">×</span>
+        <img class="l-rh" src="../assets/rhodes-logo_simple.svg" alt="The Rhodes Scholarships for Southern Africa">
+      </div>
       <div class="tag">The future is in our hands</div>
     </div>
     <div class="zig"></div>
@@ -88,13 +94,10 @@
       <div class="foot-note">Bishops covers the Cape Town Metro South district (Nyanga, Masiphumelele and more) plus partner schools like LEAP Langa. Not sure where you fit? The app checks for you in 2 minutes.</div>
 
       <div class="cta">
-        <div class="qr">
-          <img id="qr" src="qr.png" alt="Scan to check your eligibility" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
-          <div class="ph" style="display:none">QR<br>here</div>
-        </div>
+        <div class="qr"><img src="qr.png" alt="Scan to check your eligibility"></div>
         <div class="txt">
           <div class="deadline"><span class="d">Apply by 3 August 2026</span>Don't wait, start early (load-shedding season!)</div>
-          <div class="url"><span id="appurl">tinyurl.com/2aplolx6</span><small>Scan or visit to check if you qualify</small></div>
+          <div class="url"><span>rhodes4ikamvayouth.org</span><small>Scan or visit to check if you qualify</small></div>
         </div>
       </div>
     </div>

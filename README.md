@@ -5,7 +5,7 @@ out whether they can apply for a **Rhodes Scholarship** (Southern Africa, 2027
 cycle) and guides them to the official application, built around the newly
 **expanded "School" scholarships**.
 
-- **Live site:** https://pyjamashark.github.io/rhodes4ikamva-app/ (short link https://tinyurl.com/2aplolx6)
+- **Live site:** https://rhodes4ikamvayouth.org/ (hosted on Cloudflare Pages)
 - **Audience:** township students on low-end Android phones / low data, so the app
   is plain static HTML/CSS/JS (no framework, no build step), works offline after
   first visit, and stores **no personal data** (everything runs in the browser).
