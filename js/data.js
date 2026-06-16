@@ -28,6 +28,7 @@
 
     // Official Rhodes pages (no application fee; applications are online via Embark).
     officialUrl: "https://www.rhodeshouse.ox.ac.uk/scholarships/the-rhodes-scholarship/",
+    applyUrl: "https://www.rhodeshouse.ox.ac.uk/scholarships/applications/", // official "Check eligibility and apply" entry (routes to the Embark form by country)
     coursesUrl: "https://www.rhodeshouse.ox.ac.uk/scholarships/the-rhodes-scholarship/conditions-of-tenure/",
     mandelaRhodesUrl: "https://www.mandelarhodes.org/",
 

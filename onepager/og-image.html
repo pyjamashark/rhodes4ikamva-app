@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<title>og-image</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --ink: #161b27; --blue: #2027a7; --gold: #f9c200; }
+  html, body { width: 1200px; height: 630px; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; background: #ffffff; color: var(--ink); display: flex; flex-direction: column; overflow: hidden; }
+  .zig { height: 14px; flex: 0 0 auto; background:
+    linear-gradient(135deg, var(--blue) 25%, transparent 25%) -18px 0/36px 14px,
+    linear-gradient(225deg, var(--blue) 25%, transparent 25%) -18px 0/36px 14px, var(--gold); }
+  .main { flex: 1; padding: 50px 72px 30px; display: flex; flex-direction: column; justify-content: center; }
+  .logos { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; }
+  .logos .iy { height: 116px; width: auto; }
+  .logos .rh { height: 104px; width: auto; }
+  .logos .x { font-size: 46px; color: #b3c0cf; font-weight: 700; }
+  h1 { font-size: 84px; line-height: 1.02; letter-spacing: -2px; }
+  h1 .hl { color: var(--blue); }
+  .sub { font-size: 37px; color: #3a4a5c; margin-top: 18px; font-weight: 600; }
+  .bar { flex: 0 0 auto; background: var(--blue); color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 24px 72px; font-size: 33px; font-weight: 800; }
+  .bar .dl { color: var(--gold); }
+</style>
+</head>
+<body>
+  <div class="zig"></div>
+  <div class="main">
+    <div class="logos">
+      <img class="iy" src="../assets/ikamvayouth_logo.jpg" alt="">
+      <span class="x">×</span>
+      <img class="rh" src="../assets/rhodes-logo_simple.svg" alt="">
+    </div>
+    <h1>You could be a <span class="hl">Rhodes&nbsp;Scholar.</span></h1>
+    <div class="sub">Fully-funded study at Oxford, for IkamvaYouth alumni.</div>
+  </div>
+  <div class="bar"><span>rhodes4ikamvayouth.org</span><span class="dl">Apply by 3 August 2026</span></div>
+</body>
+</html>

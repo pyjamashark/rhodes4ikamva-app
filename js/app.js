@@ -502,7 +502,7 @@
     c.appendChild(docCard);
 
     c.appendChild(el("div", { class: "btn-row" }, [
-      el("a", { class: "btn btn-gold btn-block", href: DATA.META.officialUrl, target: "_blank", rel: "noopener" }, "Apply on the official Rhodes site")
+      el("a", { class: "btn btn-gold btn-block", href: DATA.META.applyUrl, target: "_blank", rel: "noopener" }, "Apply on the official Rhodes site")
     ]));
     c.appendChild(el("h2", { text: "Need more information or support?" }));
     if (matchedPool(r, "bishops")) c.appendChild(bishopsCTA());
