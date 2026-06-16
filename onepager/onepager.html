@@ -59,7 +59,10 @@
   .disc { background: var(--ink); color: #aebccd; font-size: 21px; line-height: 1.5; padding: 26px 64px 30px; }
   .disc b { color: #fff; }
 
-  @media print { @page { size: 285mm 507mm; margin: 0; } html, body { background: #fff; } }
+  /* PDF: page sized to the exact sheet (1080x1920px = 11.25in x 20in at 96dpi),
+     with a hair of extra height + dark background so the footer never clips and
+     there is no blank second page. */
+  @media print { @page { size: 11.25in 20.06in; margin: 0; } html, body { background: #161b27; } }
 </style>
 </head>
 <body>
