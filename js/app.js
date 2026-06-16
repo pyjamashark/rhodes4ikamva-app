@@ -8,17 +8,19 @@
   var DATA = window.RHODES.DATA;
   var engine = window.RHODES.engine;
 
-  /* CONFIG. Confirm before wide release (see README "Open items").
-     Until an IkamvaYouth coordinator and a consented public WhatsApp number are
-     approved, "get help" routes to the official public Rhodes queries address.
-     Set whatsapp to an E.164 number WITHOUT "+" (e.g. "2774...") to show the
-     WhatsApp button. */
+  /* Contacts and links on the results page. Per organiser guidance the Rhodes
+     office is for INFORMATION / QUERIES only (not application help) so it is not
+     swamped; application support comes from branch teams and, for Bishops, the
+     volunteer mentor form. */
   var CONTACT = {
-    name: "the Rhodes Southern Africa team",
-    email: "southernafrica.secretary@rhodestrust.com",
-    whatsapp: "" // e.g. "27740544300". Leave "" to hide the WhatsApp button for now.
+    rhodesName: "Beverley Johnson, Regional Manager of the Rhodes Scholarships for Southern Africa",
+    rhodesEmail: "southernafrica.secretary@rhodestrust.com"
   };
-  var UPDATED = "15 June 2026";
+  var LINKS = {
+    branchTeam: "https://ikamvayouth.org/our-team/",
+    bishopsForm: "" // paste the Bishops interest-form URL here once created; until then a "coming soon" note shows
+  };
+  var UPDATED = "16 June 2026";
 
   // ---- tiny DOM helper ------------------------------------------------------
   function el(tag, attrs, kids) {
@@ -389,29 +391,40 @@
   function poolTagClass(type) { return type === "school" ? "school" : type === "blmns" ? "blmns" : "region"; }
   function poolTagLabel(type) { return type === "school" ? "School pool" : type === "blmns" ? "BLMNS pool" : "Regional pool"; }
 
-  function buildSummary(r) {
-    var lines;
-    if (!r.gate.passed) {
-      lines = "Hi! I used the IkamvaYouth and Rhodes eligibility checker and I would like some advice about applying for the Rhodes Scholarship.";
-    } else {
-      var names = r.recommended.map(function (p) { return p.name; }).join(" and ");
-      lines = "Hi! I used the IkamvaYouth and Rhodes eligibility checker. It looks like I may be able to apply for: " + names + ". I would like help applying before the 3 August 2026 deadline.";
-    }
-    if (answers.branch && answers.branch !== "other") lines += " (I am from the " + answers.branch + " branch.)";
-    return lines;
+  function matchedPool(r, id) {
+    return r.recommended.concat(r.alsoEligible).some(function (p) { return p.poolId === id; });
   }
-  function contactButtons(r) {
-    var msg = buildSummary(r);
-    var row = el("div", { class: "btn-row" });
-    if (CONTACT.whatsapp) {
-      row.appendChild(el("a", { class: "btn btn-whatsapp btn-block",
-        href: "https://wa.me/" + CONTACT.whatsapp + "?text=" + encodeURIComponent(msg),
-        target: "_blank", rel: "noopener" }, "Chat on WhatsApp"));
+
+  // Prominent CTA for Bishops-eligible students: register with the volunteer
+  // mentor team (they reach out, so no single inbox gets swamped).
+  function bishopsCTA() {
+    var card = el("div", { class: "card pool-card school" }, [
+      el("span", { class: "pool-tag school", text: "Bishops support" }),
+      el("h3", { text: "Going for the Bishops Scholarship?" }),
+      el("p", { class: "muted", text: "A team of volunteers is offering to support strong Bishops applicants this year. Register your interest and one of us will get in touch to help you put your best application forward." })
+    ]);
+    if (LINKS.bishopsForm) {
+      card.appendChild(el("div", { class: "btn-row" }, [
+        el("a", { class: "btn btn-gold btn-block", href: LINKS.bishopsForm, target: "_blank", rel: "noopener" }, "Register your interest")
+      ]));
+    } else {
+      card.appendChild(el("div", { class: "note note-info", text: "Our sign-up form is coming soon. For now, reach your branch team below and mention you are interested in Bishops." }));
     }
-    row.appendChild(el("a", { class: "btn btn-ghost btn-block",
-      href: "mailto:" + CONTACT.email + "?subject=" + encodeURIComponent("Rhodes Scholarship, help to apply") +
-            "&body=" + encodeURIComponent(msg) }, "Email " + CONTACT.name));
-    return row;
+    return card;
+  }
+
+  // Branch-team support link + an information-only line for the Rhodes office.
+  function infoLinks() {
+    var frag = document.createDocumentFragment();
+    frag.appendChild(el("p", { class: "muted", text: "For advice specific to your situation, your IkamvaYouth branch team can help." }));
+    frag.appendChild(el("div", { class: "btn-row" }, [
+      el("a", { class: "btn btn-ghost btn-block", href: LINKS.branchTeam, target: "_blank", rel: "noopener" }, "Find your branch team")
+    ]));
+    frag.appendChild(el("p", { class: "small muted", html:
+      "For further information or queries about the Scholarship itself, you can contact " + CONTACT.rhodesName +
+      ", directly at <a href=\"mailto:" + CONTACT.rhodesEmail + "?subject=" + encodeURIComponent("Rhodes Scholarship query") +
+      "\">" + CONTACT.rhodesEmail + "</a>." }));
+    return frag;
   }
 
   function renderResult(r) {
@@ -431,7 +444,7 @@
         el("h3", { text: "Keep going." }),
         el("p", { text: "Many strong applicants apply more than once or take a stepping-stone route first. Talk to someone. It is worth it." })
       ]));
-      c.appendChild(contactButtons(r));
+      c.appendChild(infoLinks());
       c.appendChild(el("div", { class: "btn-row" }, [
         el("a", { class: "btn btn-ghost btn-block", href: DATA.META.officialUrl, target: "_blank", rel: "noopener" }, "Read the official criteria"),
         el("button", { class: "btn btn-ghost btn-block", type: "button", onclick: startCheck }, "Start over")
@@ -486,9 +499,9 @@
     c.appendChild(el("div", { class: "btn-row" }, [
       el("a", { class: "btn btn-gold btn-block", href: DATA.META.officialUrl, target: "_blank", rel: "noopener" }, "Apply on the official Rhodes site")
     ]));
-    c.appendChild(el("h2", { text: "Want a hand?" }));
-    c.appendChild(el("p", { class: "muted", text: "Send a message and someone can help you prepare your application." }));
-    c.appendChild(contactButtons(r));
+    c.appendChild(el("h2", { text: "Need more information or support?" }));
+    if (matchedPool(r, "bishops")) c.appendChild(bishopsCTA());
+    c.appendChild(infoLinks());
 
     if (r.needsDisclaimer) {
       c.appendChild(el("div", { class: "note note-info", text: DATA.META.disclaimer }));
