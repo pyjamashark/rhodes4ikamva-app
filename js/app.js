@@ -452,18 +452,23 @@
       return;
     }
 
-    c.appendChild(el("h1", { text: "Good news, you may be able to apply!", tabindex: "-1" }));
+    c.appendChild(el("h1", { text: "Good news, you are eligible to apply!", tabindex: "-1" }));
     c.appendChild(el("p", { class: "lead",
       text: r.recommended.length > 1
-        ? "You appear to match these Rhodes pools. You can apply to up to two, usually a School pool plus your regional pool:"
-        : "You appear to match this Rhodes pool:" }));
+        ? "You match these Rhodes pools. You can apply to up to two, usually a School pool plus your regional pool:"
+        : "You match this Rhodes pool:" }));
 
     r.recommended.forEach(function (p) {
-      c.appendChild(el("div", { class: "card pool-card " + poolTagClass(p.type) }, [
+      var kids = [
         el("span", { class: "pool-tag " + poolTagClass(p.type), text: poolTagLabel(p.type) }),
         el("h3", { text: p.name }),
         el("p", { class: "muted", text: p.reason })
-      ]));
+      ];
+      if (p.type === "school") {
+        kids.push(el("p", { class: "small", style: "color:var(--ok);font-weight:700;margin:6px 0 0",
+          text: "Smaller field: fewer people are eligible for the School pools, so this can be your strongest route." }));
+      }
+      c.appendChild(el("div", { class: "card pool-card " + poolTagClass(p.type) }, kids));
     });
 
     if (r.academicsEncouragement) {
