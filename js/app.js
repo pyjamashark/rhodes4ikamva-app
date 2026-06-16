@@ -18,7 +18,7 @@
   };
   var LINKS = {
     branchTeam: "https://ikamvayouth.org/our-team/",
-    bishopsForm: "" // paste the Bishops interest-form URL here once created; until then a "coming soon" note shows
+    bishopsForm: "https://forms.gle/nQ4Huc1uGN5xqmN57" // Bishops interest form ("Going for the Bishops Rhodes Scholarship? Register here")
   };
   var UPDATED = "16 June 2026";
 
